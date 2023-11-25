@@ -1,0 +1,62 @@
+﻿@model WebMoney.Models.Replenish
+@using System.Security.Claims;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "Replenish";
+    string statusError1 = ViewData["StatusError"] as string;
+    string statusError2 = ViewData["StatusErrors"] as string;
+    string statusError5 = ViewData["StatusErrorLog"] as string;
+}
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] @Localizer["Кошелек"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/RegLog.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebMoney.styles.css" asp-append-version="true" />
+</head>
+
+
+<div class="container">
+    <h1>@Localizer["Кошелек"]</h1>
+    <h2>@Localizer["Перевод"]</h2>
+    <form class="form" method="post" asp-controller="User" asp-action="Replenish">
+        <div asp-validation-summary="ModelOnly"></div>
+        <input type="hidden" id="UserId" name="UserId" value="@Model.Id" />
+        <fieldset class="form-fieldset ui-input __second">
+            <input type="text" placeholder="@Localizer["Номер телефона или ваш Логин"]" id="email" tabindex="0" asp-for="IndificatorOrPhone" />
+            <label for="email" asp-for="IndificatorOrPhone">
+                <span data-text="NumberOrLogin" asp-validation-for="IndificatorOrPhone">@Localizer["Номер телефона или ваш Логин"]</span>
+            </label>
+        </fieldset>
+
+        <fieldset class="form-fieldset ui-input __third">
+            <div style="display:flex;align-items: center;">
+                <input type="number" placeholder="@Localizer["Введите сумму"]" id="new-password" asp-for="Amount" min="1" />
+            </div>
+            <label style="position: relative; display: block; padding: 8px 0 8px 0; text-transform: uppercase; font-size: 14px; letter-spacing: .0875em; font-weight: 500; text-align: left;" for="Amount" asp-for="Amount">
+                <span data-text="Amount" asp-validation-for="Amount">@Localizer["Введите сумму"]</span>
+            </label>
+        </fieldset>
+        <div class="form-group" style="color: red;">
+            @Localizer[$"{statusError5}"]
+        </div>
+        <div class="form-footer">
+            <button type="submit" class="btn">@Localizer["Отправить"]</button>
+        </div>
+    </form>
+</div>
+
+
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script src="~/js/RegLog.js" asp-append-version="true"></script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
